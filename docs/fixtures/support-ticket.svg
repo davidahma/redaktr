@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 348" width="920" height="348" font-family="Helvetica, Arial, sans-serif">
+  <title>Fictional support ticket for testing screenshot redaction</title>
+  <rect width="920" height="348" fill="#eef2f3"/>
+  <rect x="24" y="20" width="872" height="308" rx="12" fill="#ffffff"/>
+  <path d="M36 20h848q12 0 12 12v42H24V32q0-12 12-12z" fill="#213d40"/>
+  <text x="52" y="55" font-size="21" font-weight="700" fill="#ffffff">Support inbox</text>
+  <text x="730" y="54" font-size="17" fill="#c1d8d6">Sample ticket</text>
+  <text x="52" y="125" font-size="31" font-weight="700" fill="#1b3032">Export button is disabled</text>
+  <text x="52" y="159" font-size="19" fill="#476468">Ticket #1842</text>
+  <path d="M52 182h814" fill="none" stroke="#d4dfe0" stroke-width="2"/>
+  <g font-size="22" fill="#526668">
+    <text x="52" y="221">Requester</text>
+    <text x="52" y="261">Client IP</text>
+    <text x="52" y="301">Reproduction</text>
+  </g>
+  <g font-size="23" fill="#132c2f">
+    <text x="230" y="221">casey@example.org</text>
+    <text x="230" y="261">192.0.2.14</text>
+    <text x="230" y="301">Open the report, then choose Export.</text>
+  </g>
+</svg>

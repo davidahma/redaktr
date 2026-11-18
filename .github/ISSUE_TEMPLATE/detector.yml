@@ -1,0 +1,32 @@
+name: Detector miss or false positive
+description: Share a synthetic case where a finding was missing or unnecessary.
+title: "[Detector] "
+body:
+  - type: markdown
+    attributes:
+      value: "Create an example from scratch. Real customer screenshots, secrets, logs, and policy exports do not belong in public issues. See [Contributing](https://github.com/davidahma/redaktr/blob/main/CONTRIBUTING.md)."
+  - type: input
+    id: version
+    attributes:
+      label: Redaktr version or commit and macOS version
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Synthetic input and active policy
+      description: Include the input type, size, and scale if the issue depends on image quality.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Which regions should be hidden and which should remain readable?
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What did the detector suggest, and how did you correct it?
+    validations:
+      required: true

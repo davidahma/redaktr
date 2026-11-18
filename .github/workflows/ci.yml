@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full_ui:
+        description: Run the full isolated UI suite
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ inputs.full_ui && 'full' || 'smoke' }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    name: ${{ inputs.full_ui && 'Redaktr macOS full UI' || 'Redaktr macOS' }}
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Verify source configuration
+        run: |
+          xcodebuild -version
+          swift --version
+          python3 Scripts/check_local_only_entitlements.py
+          plutil -lint Apps/macOSApp/Redaktr/Redaktr/Info.plist
+          git diff-tree --check --root HEAD
+      - name: Test RedaktrCore
+        run: swift test --package-path Packages/RedaktrCore
+      - name: Build sandboxed app
+        run: |
+          xcodebuild -project Apps/macOSApp/Redaktr/Redaktr.xcodeproj \
+            -scheme Redaktr -configuration Release -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath "$RUNNER_TEMP/redaktr-build" build
+          codesign -d --entitlements :- \
+            "$RUNNER_TEMP/redaktr-build/Build/Products/Release/Redaktr.app" >"$RUNNER_TEMP/redaktr-built-entitlements.plist"
+          python3 Scripts/check_local_only_entitlements.py "$RUNNER_TEMP/redaktr-built-entitlements.plist"
+      - name: Test isolated app
+        env:
+          REDAKTR_UI_SUITE: ${{ inputs.full_ui && 'full' || 'smoke' }}
+        run: Scripts/test_ui.sh -resultBundlePath "$RUNNER_TEMP/Redaktr.xcresult"
+      - name: Save UI diagnostics
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: redaktr-ui-diagnostics
+          path: ${{ runner.temp }}/Redaktr.xcresult
+          if-no-files-found: ignore
+          retention-days: 7

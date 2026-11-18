@@ -1,0 +1,70 @@
+name: Redaktr
+options:
+  bundleIdPrefix: com.davidahma
+  createIntermediateGroups: true
+  deploymentTarget:
+    macOS: "14.0"
+configs:
+  Debug: debug
+  UITesting: debug
+  Release: release
+packages:
+  RedaktrCore:
+    path: ../../../Packages/RedaktrCore
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+targets:
+  Redaktr:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Redaktr
+    dependencies:
+      - package: RedaktrCore
+    settings:
+      base:
+        PRODUCT_NAME: Redaktr
+        PRODUCT_BUNDLE_IDENTIFIER: com.davidahma.redaktr
+        CODE_SIGN_ENTITLEMENTS: Redaktr/Redaktr.entitlements
+        ENABLE_HARDENED_RUNTIME: YES
+        INFOPLIST_FILE: Redaktr/Info.plist
+        MARKETING_VERSION: "0.2.0"
+        CURRENT_PROJECT_VERSION: "5"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        UITesting:
+          PRODUCT_BUNDLE_IDENTIFIER: com.davidahma.redaktr.uitesting
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) DEBUG"
+  RedaktrUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: RedaktrUITests
+    dependencies:
+      - target: Redaktr
+    settings:
+      base:
+        PRODUCT_NAME: RedaktrUITests
+        PRODUCT_BUNDLE_IDENTIFIER: com.davidahma.redaktr.uitesting.runner
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Redaktr
+schemes:
+  Redaktr:
+    build:
+      targets:
+        Redaktr: all
+        RedaktrUITests: [test]
+    test:
+      config: UITesting
+      targets:
+        - RedaktrUITests
+    run:
+      config: Debug
+    archive:
+      config: Release

@@ -1,0 +1,26 @@
+name: Bug report
+description: Describe a reproducible problem with opening, reviewing, or exporting an image.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "If a selected mask exposes original pixels, an export alters the source, or an unexpected transfer occurs, [report it privately](https://github.com/davidahma/redaktr/security/advisories/new). Use fictional data in public reports."
+  - type: input
+    id: version
+    attributes:
+      label: Redaktr version or commit and macOS version
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps using a synthetic image
+      description: Which import method, policy, and output action did you use?
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and observed result
+    validations:
+      required: true

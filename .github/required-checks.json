@@ -1,0 +1,9 @@
+{
+  "required_checks": [
+    {
+      "workflow": "CI",
+      "name": "Redaktr macOS",
+      "purpose": "Verify sandbox entitlements, run Swift package tests, build the macOS app, and run isolated UI smoke tests."
+    }
+  ]
+}
