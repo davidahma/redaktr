@@ -462,9 +462,14 @@ final class RedaktrUITests: XCTestCase {
 
         let watchedAlertsMenu = app.descendants(matching: .any)["watched-alerts-menu"].firstMatch
         XCTAssertTrue(watchedAlertsMenu.waitForExistence(timeout: 3))
-        XCTAssertTrue(accessibleText(for: watchedAlertsMenu).contains("Watched alerts"))
         XCTAssertTrue(app.staticTexts["UI fixture email"].exists)
         XCTAssertFalse(app.alerts["Possible leaks found"].exists)
+        watchedAlertsMenu.click()
+        let queuedItem = app.menuItems["redaktr-ui-watched-fixture.png - 1 finding"].firstMatch
+        XCTAssertTrue(queuedItem.waitForExistence(timeout: 3))
+        queuedItem.click()
+        XCTAssertTrue(app.staticTexts["Watched fixture email"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["UI fixture email"].exists)
 
         try? FileManager.default.removeItem(at: context.tempDirectory)
     }
