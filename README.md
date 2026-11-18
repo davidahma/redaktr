@@ -1,8 +1,8 @@
 # Redaktr
 
-Redaktr is a macOS app that helps you remove sensitive details from screenshots before you attach them to a support ticket, paste them into a chat, or publish a bug report. It uses Apple Vision to read text and locate faces and codes on your Mac. You review the suggested regions, draw any missing ones, and copy or save a flattened image with opaque masks.
+Redaktr is a macOS app that helps you remove sensitive details from screenshots before you attach them to a support ticket, paste them into a chat, or publish a bug report. You review the suggested regions, draw any missing ones, and copy or save a flattened image with opaque masks.
 
-The community edition has no trial, account, license key, telemetry, or in-app updater. The source build requires macOS 14 or later and Xcode with its macOS SDK.
+**Redaktr uses Apple’s built-in Vision models and processes images entirely on your Mac.** It works offline and requires no external AI service, API key, account, or separate model download. The source build requires macOS 14 or later and Xcode with its macOS SDK.
 
 [![macOS CI](https://github.com/davidahma/redaktr/actions/workflows/ci.yml/badge.svg)](https://github.com/davidahma/redaktr/actions/workflows/ci.yml)
 
@@ -40,6 +40,14 @@ The sample ticket contains a fictional requester email and a documentation-only 
 - Review possible emails, credential-like strings, account identifiers, payment card numbers, faces, QR codes, and barcodes. Add your own local terms, patterns, and exceptions in Settings.
 - Adjust the proposed masks and add boxes by hand. Export a flattened PNG or JPEG. The encoder creates a fresh image without copying the original file's metadata.
 - For repeated work, review a folder as a batch, or opt into watching a screenshot folder or image clipboard. Screen capture is optional and may require macOS Screen Recording permission.
+
+## How on-device redaction works
+
+1. **Read and locate.** Redaktr calls the Apple Vision framework built into macOS. `VNRecognizeTextRequest` reads screenshot text in accuracy mode and provides the bounding boxes used to place masks. `VNDetectFaceRectanglesRequest` locates faces, and `VNDetectBarcodesRequest` locates QR codes and other barcodes.
+2. **Flag and review.** Swift rules scan the recognized text for patterns such as email addresses, payment card numbers, and credential-like strings. Redaktr applies your custom terms, regular expressions, and allowlist locally, then maps matches back to the image for review.
+3. **Render and export.** Core Graphics draws opaque masks into a fresh bitmap. Image I/O encodes that bitmap as PNG or JPEG without copying metadata from the source file. Clipboard output is a flattened PNG.
+
+Screenshot pixels and recognized text stay on the Mac throughout this pipeline. The community app has no network entitlements, telemetry, trial, license key, or in-app updater. [Apple Vision documentation](https://developer.apple.com/documentation/vision) · [Redaktr architecture](docs/engineering/architecture.md)
 
 ## Before sharing
 
