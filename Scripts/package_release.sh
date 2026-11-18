@@ -46,7 +46,13 @@ xcodebuild -project "$project" -scheme Redaktr -configuration Release \
 app="$build/DerivedData/Build/Products/Release/Redaktr.app"
 actual_version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Contents/Info.plist")"
 [[ "v$actual_version" == "$tag" ]] || { printf 'App version does not match the tag.\n' >&2; exit 1; }
-xcrun lipo -verify_arch arm64 x86_64 "$app/Contents/MacOS/Redaktr"
+architectures="$(xcrun lipo -archs "$app/Contents/MacOS/Redaktr")"
+for architecture in arm64 x86_64; do
+    if [[ " $architectures " != *" $architecture "* ]]; then
+        printf 'Release executable is missing %s.\n' "$architecture" >&2
+        exit 1
+    fi
+done
 codesign --force --options runtime --timestamp --sign "$REDAKTR_DEVELOPER_ID" \
     --entitlements Apps/macOSApp/Redaktr/Redaktr/Redaktr.entitlements "$app"
 codesign --verify --strict --verbose=2 "$app"

@@ -714,6 +714,7 @@ final class RedaktrUITests: XCTestCase {
 
             let app = makeApp()
             app.launchEnvironment["REDAKTR_UI_CAPTURE_FIXTURE_PATH"] = fixtureURL.path
+            app.launchEnvironment["REDAKTR_UI_TEST_TEXT_OBSERVATION"] = "Project release notes"
             app.launchEnvironment["REDAKTR_UI_ENABLE_GLOBAL_CAPTURE_SHORTCUTS"] = "1"
             app.launch()
             app.activate()
@@ -743,6 +744,7 @@ final class RedaktrUITests: XCTestCase {
         pasteboard.clearContents()
         let app = makeApp(captureOutputModeID: "copyCleanedPNG")
         app.launchEnvironment["REDAKTR_UI_CAPTURE_FIXTURE_PATH"] = fixtureURL.path
+        app.launchEnvironment["REDAKTR_UI_TEST_TEXT_OBSERVATION"] = "Project release notes"
         app.launchEnvironment["REDAKTR_UI_ENABLE_GLOBAL_CAPTURE_SHORTCUTS"] = "1"
         app.launch()
         app.activate()
@@ -774,6 +776,7 @@ final class RedaktrUITests: XCTestCase {
 
         let app = makeApp(areaShortcutID: "controlOption1")
         app.launchEnvironment["REDAKTR_UI_CAPTURE_FIXTURE_PATH"] = fixtureURL.path
+        app.launchEnvironment["REDAKTR_UI_TEST_TEXT_OBSERVATION"] = "Project release notes"
         app.launchEnvironment["REDAKTR_UI_ENABLE_GLOBAL_CAPTURE_SHORTCUTS"] = "1"
         app.launch()
         app.activate()
