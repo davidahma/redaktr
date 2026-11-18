@@ -12,6 +12,7 @@ case "$suite" in
       -only-testing:RedaktrUITests/RedaktrUITests/testDirectExportWritesCleanedImageAndRecordsHistory \
       -only-testing:RedaktrUITests/RedaktrUITests/testFailedScanBlocksSharingUntilManualReview \
       -only-testing:RedaktrUITests/RedaktrUITests/testFailedBatchItemBlocksBulkExportUntilManualReview \
+      -only-testing:RedaktrUITests/RedaktrUITests/testPasteImageKeyboardShortcutLoadsClipboardImage \
       -only-testing:RedaktrUITests/RedaktrUITests/testSettingsExposeCustomDetectionControls \
       "$@"
     ;;

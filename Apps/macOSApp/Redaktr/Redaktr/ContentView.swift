@@ -3354,7 +3354,7 @@ struct ContentView: View {
     }
 
     private func clipboardImageData() -> Data? {
-        ClipboardImageReader.imageData(in: .general)
+        ClipboardImageReader.imageData(in: RedaktrPasteboard.current)
     }
 
     private func handleAppear() {
