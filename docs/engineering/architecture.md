@@ -20,7 +20,7 @@ The renderer applies opaque masks to a fresh bitmap and encodes it without carry
 
 ## Optional automatic output
 
-Capture can save or copy, and Clipboard Protection can replace an image on the pasteboard. The defaults open review. When the user enables automatic clipboard replacement, the result is tied to the pasteboard generation that Redaktr scanned. Undo also checks ownership before changing a later pasteboard or generated file.
+Capture can save or copy, and Clipboard Protection can replace an image on the pasteboard. Capture opens review by default. Clipboard Protection starts disabled. When you enable it, the default mode pauses for findings marked Check and can replace an image when no finding requires review. When the user enables automatic clipboard replacement, the result is tied to the pasteboard generation that Redaktr scanned. Undo also checks ownership before changing a later pasteboard or generated file.
 
 ## Local state
 

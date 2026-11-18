@@ -911,14 +911,7 @@ struct RedaktrSettingsView: View {
 
     private var buildTrustWarning: String? {
         #if DEBUG
-        RedaktrBuildTrustEvaluator.assess(
-            RedaktrBuildTrustInput(
-                isDebugBuild: true,
-                teamIdentifier: "development",
-                signingAuthority: "Apple Development",
-                gatekeeperAccepted: nil
-            )
-        ).userFacingWarning
+        "Development builds can behave differently with macOS notifications and Gatekeeper."
         #else
         nil
         #endif

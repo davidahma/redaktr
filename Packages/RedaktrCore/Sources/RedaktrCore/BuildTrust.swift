@@ -49,7 +49,7 @@ public enum RedaktrBuildTrustEvaluator {
             return RedaktrBuildTrustAssessment(
                 kind: .gatekeeperRejected,
                 isTrustedForAmbientDistribution: false,
-                userFacingWarning: "This Redaktr build is not accepted by Gatekeeper. Use the signed, notarized Redaktr build for notifications, updates, and distribution testing."
+                userFacingWarning: "This Redaktr build is not accepted by Gatekeeper. Verify notifications on the signed distribution candidate."
             )
         }
 
@@ -59,7 +59,7 @@ public enum RedaktrBuildTrustEvaluator {
             return RedaktrBuildTrustAssessment(
                 kind: .adHocOrUnsigned,
                 isTrustedForAmbientDistribution: false,
-                userFacingWarning: "This Redaktr build is unsigned or ad-hoc signed. Use the signed, notarized Redaktr build for notifications, updates, and distribution testing."
+                userFacingWarning: "This Redaktr build is unsigned or ad-hoc signed. Verify notifications on the signed distribution candidate."
             )
         }
 
@@ -67,11 +67,11 @@ public enum RedaktrBuildTrustEvaluator {
             return RedaktrBuildTrustAssessment(
                 kind: .developmentSigned,
                 isTrustedForAmbientDistribution: false,
-                userFacingWarning: "Development builds can behave differently for macOS notifications, updates, and Gatekeeper checks. Test ambient protection with the signed, notarized Redaktr build."
+                userFacingWarning: "Development builds can behave differently with macOS notifications and Gatekeeper. Verify both on the distribution candidate."
             )
         }
 
-        if authority.contains("developer id application") && input.gatekeeperAccepted != false {
+        if authority.contains("developer id application") && input.gatekeeperAccepted == true {
             return RedaktrBuildTrustAssessment(
                 kind: .notarizedDeveloperID,
                 isTrustedForAmbientDistribution: true,
@@ -82,7 +82,7 @@ public enum RedaktrBuildTrustEvaluator {
         return RedaktrBuildTrustAssessment(
             kind: .unknownSigned,
             isTrustedForAmbientDistribution: false,
-            userFacingWarning: "This Redaktr build has an unfamiliar signature. Use the signed, notarized Redaktr build for notifications, updates, and distribution testing."
+            userFacingWarning: "This build has no verified Gatekeeper assessment. Verify notifications on the signed distribution candidate."
         )
     }
 }

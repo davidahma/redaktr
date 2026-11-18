@@ -173,8 +173,8 @@ final class RedaktrCaptureTests: XCTestCase {
             RedaktrBuildTrustEvaluator.assess(
                 RedaktrBuildTrustInput(
                     isDebugBuild: false,
-                    teamIdentifier: "34PBV2Y44H",
-                    signingAuthority: "Developer ID Application: David Ahmann (34PBV2Y44H)",
+                    teamIdentifier: "TEAMID1234",
+                    signingAuthority: "Developer ID Application: Example Developer (TEAMID1234)",
                     gatekeeperAccepted: true
                 )
             ).kind,
@@ -185,8 +185,8 @@ final class RedaktrCaptureTests: XCTestCase {
             RedaktrBuildTrustEvaluator.assess(
                 RedaktrBuildTrustInput(
                     isDebugBuild: true,
-                    teamIdentifier: "34PBV2Y44H",
-                    signingAuthority: "Apple Development: David Ahmann",
+                    teamIdentifier: "TEAMID1234",
+                    signingAuthority: "Apple Development: Example Developer",
                     gatekeeperAccepted: nil
                 )
             ).kind,
@@ -209,13 +209,26 @@ final class RedaktrCaptureTests: XCTestCase {
             RedaktrBuildTrustEvaluator.assess(
                 RedaktrBuildTrustInput(
                     isDebugBuild: false,
-                    teamIdentifier: "34PBV2Y44H",
-                    signingAuthority: "Developer ID Application: David Ahmann (34PBV2Y44H)",
+                    teamIdentifier: "TEAMID1234",
+                    signingAuthority: "Developer ID Application: Example Developer (TEAMID1234)",
                     gatekeeperAccepted: false
                 )
             ).kind,
             .gatekeeperRejected
         )
+    }
+
+    func testDeveloperIDSignatureWithoutGatekeeperReadbackIsUnverified() {
+        let assessment = RedaktrBuildTrustEvaluator.assess(
+            RedaktrBuildTrustInput(
+                isDebugBuild: false,
+                teamIdentifier: "TEAMID1234",
+                signingAuthority: "Developer ID Application: Example Developer (TEAMID1234)",
+                gatekeeperAccepted: nil
+            )
+        )
+        XCTAssertEqual(assessment.kind, .unknownSigned)
+        XCTAssertFalse(assessment.isTrustedForAmbientDistribution)
     }
 
     func testScreenshotProtectionStatusFlagsCaptureSaveModeWithoutFolder() throws {
